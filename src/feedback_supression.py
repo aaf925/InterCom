@@ -203,6 +203,23 @@ class FeedbackBuffer(buffering_mod.Buffering):
 
         # 3) Play next chunk from buffer (remote audio)
         chunk = self.unbuffer_next_chunk()
+
+                # === Métricas de eco (para comparar métodos) ===
+        ref = self._get_reference_block().astype(np.float64) / 32768.0  # referencia (altavoz)
+        mic = ADC.astype(np.float64) / 32768.0                          # micrófono original
+        clean = clean_ADC.astype(np.float64) / 32768.0                  # señal "limpia"
+
+        # Energía media (potencia)
+        power_in = np.mean(mic**2) + 1e-12
+        power_out = np.mean(clean**2) + 1e-12
+        erle = 10 * np.log10(power_in / power_out)
+
+        # Correlación entre eco estimado y micrófono
+        corr = np.corrcoef(ref.flatten(), mic.flatten())[0, 1]
+
+        # Mostrar resultados
+        print(f"ERLE={erle:6.2f} dB | Corr={corr:6.3f}")
+
         self.play_chunk(DAC, chunk)
 
     def _read_IO_and_play(self, DAC, frames, time, status):

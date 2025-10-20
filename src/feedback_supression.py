@@ -60,7 +60,7 @@ class Feedback_Suppression__verbose(Feedback_Suppression, buffer.Buffering__verb
         # --- Sliders (ajustables) ---
         self.threshold_slider = Slider(
             self.display, 160, 450, 400, 20,
-            min=1, max=10, step=0.5, initial=5
+            min=1, max=10, step=0.5, initial=10
         )
         self.attenuation_slider = Slider(
             self.display, 160, 480, 400, 20,

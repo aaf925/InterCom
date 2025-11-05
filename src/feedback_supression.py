@@ -64,7 +64,7 @@ class Feedback_Suppression__verbose(Feedback_Suppression, buffer.Buffering__verb
         )
         self.attenuation_slider = Slider(
             self.display, 160, 480, 400, 20,
-            min=0.1, max=1.0, step=0.05, initial=0.2
+            min=0.1, max=1.0, step=0.05, initial=0.5
         )
 
         # --- TextBoxes (valores dentro de las cajas) ---
@@ -131,7 +131,6 @@ class Feedback_Suppression__verbose(Feedback_Suppression, buffer.Buffering__verb
         super().update_display()
 
     def suppress_feedback(self, indata):
-        """Versión ajustable con sliders."""
         data = indata[:, 0].astype(np.float32)
         spectrum = np.abs(fft.rfft(data))
         threshold = np.mean(spectrum) * self.threshold
